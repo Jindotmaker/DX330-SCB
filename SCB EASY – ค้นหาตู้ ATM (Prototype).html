@@ -1,0 +1,196 @@
+<!DOCTYPE html><html lang="th"><head><meta charset="utf-8"><title>SCB EASY – ค้นหาตู้ ATM (Prototype)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--p:#4E2A84;--p2:#6B3FA0;--g:#F5B700;--bg:#F3F3F6;--sf:#fff;--tx:#1d1730;--mu:#6b6780;--bd:#e5e3ec;--mb:#eceee6;--mr:#fff;--mw:#bcdcf0;--mp:#cfe6c3;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){color-scheme:dark;--bg:#14121a;--sf:#201d2a;--tx:#f2f0f7;--mu:#a19cb3;--bd:#35314a;--mb:#23222a;--mr:#383645;--mw:#1f3a50;--mp:#25402a}}
+:root[data-theme="dark"]{color-scheme:dark;--bg:#14121a;--sf:#201d2a;--tx:#f2f0f7;--mu:#a19cb3;--bd:#35314a;--mb:#23222a;--mr:#383645;--mw:#1f3a50;--mp:#25402a}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{font-family:'Noto Sans Thai',system-ui,sans-serif;background:var(--bg);color:var(--tx);font-size:14px}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--p);z-index:10}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none}h3{margin:4px 0}p{margin:4px 0}
+.app{position:relative;max-width:430px;height:100%;margin:0 auto;overflow:hidden;background:var(--bg);box-shadow:0 0 0 1px var(--bd)}
+.scr{position:absolute;inset:0;display:none;flex-direction:column}.scr.on{display:flex}
+.hd{background:linear-gradient(135deg,var(--p),var(--p2));color:#fff;padding:16px 16px 58px;display:flex;justify-content:space-between;align-items:center}
+.sc{flex:1;overflow:auto;padding:0 14px 14px;margin-top:-46px}
+.card{background:var(--sf);border-radius:16px;padding:14px;box-shadow:0 2px 10px #0001}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 8px;margin:16px 0}
+.mi{display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px;position:relative;text-align:center;width:100%}
+.ic{width:54px;height:54px;border-radius:16px;background:var(--sf);display:grid;place-items:center;font-size:24px;box-shadow:0 1px 6px #0001}
+.mi.new .ic{outline:2px solid var(--g);background:#fff4c9}
+.nw{position:absolute;top:-6px;right:2px;background:var(--g);color:#2b1a00;font-size:10px;font-weight:700;border-radius:8px;padding:1px 6px}
+.promo{background:linear-gradient(120deg,var(--p),var(--p2));color:#fff;display:flex;gap:10px;align-items:center;width:100%;text-align:left}
+.promo b{color:var(--g)}
+.nav{display:flex;background:var(--sf);border-top:1px solid var(--bd)}.nav span{flex:1;text-align:center;padding:8px;font-size:11px;color:var(--mu)}.nav .on{color:var(--p);font-weight:700}
+.top{display:flex;gap:8px;align-items:center;background:var(--p);padding:10px 12px;color:#fff}
+.sb{flex:1;display:flex;align-items:center;gap:6px;background:var(--sf);color:var(--tx);border-radius:22px;padding:0 12px;height:40px;min-width:0}
+.sb input{flex:1;border:0;background:none;outline:0;font:inherit;color:inherit;min-width:0}
+.ib{width:40px;height:40px;border-radius:50%;background:#ffffff26;color:#fff;font-size:18px;position:relative;flex:none}
+.ib i{position:absolute;top:6px;right:6px;width:9px;height:9px;border-radius:50%;background:var(--g)}
+.demo{background:var(--g);color:#2b1a00;font-size:12px;padding:5px 12px;text-align:center;font-weight:600}
+.stp{background:var(--sf);border-bottom:1px solid var(--bd);font-size:12px;padding:6px 12px;display:none;justify-content:space-between;gap:8px;align-items:center}.stp.on{display:flex}
+.stp button{color:var(--p);font-weight:700}
+.map{position:relative;flex:1;overflow:hidden;touch-action:none;background:var(--mb);cursor:grab}
+#sv{position:absolute;inset:0;width:100%;height:100%}
+.ui{position:absolute}
+.fab{width:42px;height:42px;border-radius:50%;background:var(--sf);box-shadow:0 2px 8px #0003;font-size:18px;display:block}
+.rt{right:12px;top:12px;display:flex;flex-direction:column;gap:8px}
+.chips{left:12px;top:12px;display:flex;gap:6px;flex-wrap:wrap;max-width:62%}.ch{background:var(--sf);border-radius:14px;padding:4px 10px;font-size:12px;box-shadow:0 1px 4px #0002}
+.bt{left:0;right:0;bottom:12px;display:flex;flex-direction:column;align-items:center;gap:8px}
+.pill{background:var(--p);color:#fff;border-radius:22px;padding:9px 18px;font-weight:700;box-shadow:0 2px 8px #0004}
+.cr{display:flex;gap:10px;overflow-x:auto;padding:0 12px;width:100%}
+.cc{flex:none;width:210px;background:var(--sf);border-radius:14px;padding:10px;box-shadow:0 2px 8px #0003;text-align:left}
+.cc small,.mu{color:var(--mu)}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.bd{font-size:10px;font-weight:700;border:1px solid #c77d00;color:#c77d00;border-radius:6px;padding:0 5px;font-style:normal}.bd.ok{border-color:#0e9f6e;color:#0e9f6e}
+.emp{left:24px;right:24px;top:30%;background:var(--sf);border-radius:16px;padding:18px;text-align:center;box-shadow:0 4px 16px #0003;display:none}.emp.on{display:block}
+.sh{position:absolute;left:0;right:0;bottom:0;background:var(--sf);border-radius:20px 20px 0 0;padding:8px 16px 16px;box-shadow:0 -4px 20px #0003;transform:translateY(105%);transition:transform .25s;max-height:82%;overflow:auto;z-index:5}.sh.on{transform:none}
+.gr{width:40px;height:4px;border-radius:2px;background:var(--bd);margin:0 auto 10px}
+#ov{position:absolute;inset:0;background:#0006;opacity:0;pointer-events:none;transition:.2s;z-index:4}#ov.on{opacity:1;pointer-events:auto}
+.row{display:flex;align-items:center;gap:6px}.row button{margin-left:auto;font-size:18px}
+.im{height:84px;border-radius:12px;background:var(--bg);color:var(--mu);display:grid;place-items:center;font-size:12px;margin:10px 0;border:1px dashed var(--bd)}
+.kv{display:flex;justify-content:space-between;gap:10px;padding:6px 0;border-bottom:1px solid var(--bd)}.kv b{text-align:right}
+.seg{display:flex;gap:8px;margin:12px 0}.seg button{flex:1;padding:9px 4px;border-radius:12px;border:1px solid var(--bd);font-size:12px}.seg .on{border-color:var(--p);background:var(--p);color:#fff}
+.bb{display:flex;gap:8px}.btn{flex:1;display:block;text-align:center;text-decoration:none;padding:12px;border-radius:14px;font-weight:700}
+.btn.p{background:var(--p);color:#fff}.btn.o{border:1.5px solid var(--p);color:var(--p)}
+.op{display:flex;gap:10px;align-items:center;padding:10px;border:1px solid var(--bd);border-radius:12px;margin:6px 0}.op.on{border-color:var(--p);background:#4E2A8412}.op small{display:block;color:var(--mu)}
+select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);color:var(--tx);font:inherit;margin:6px 0 10px}
+.md{position:absolute;inset:0;display:none;place-items:center;background:#0006;z-index:6;padding:24px}.md.on{display:grid}.md>div{background:var(--sf);border-radius:18px;padding:20px;text-align:center;max-width:320px}
+#ld{background:var(--bg)}.sp{width:34px;height:34px;border:4px solid var(--bd);border-top-color:var(--p);border-radius:50%;animation:s 1s linear infinite;margin:0 auto 10px}@keyframes s{to{transform:rotate(360deg)}}
+#ts{position:absolute;left:16px;right:16px;bottom:24px;background:#222;color:#fff;border-radius:12px;padding:10px 14px;z-index:9;display:none;text-align:center}
+.r1,.r2{fill:none;vector-effect:non-scaling-stroke}.r1{stroke:var(--mr);stroke-width:7}.r2{stroke:var(--mr);stroke-width:3}
+.w{stroke:var(--mw);stroke-width:260;fill:none}
+.hs{flex:1;overflow:auto;background:var(--bg)}
+.hh{display:flex;gap:14px;align-items:center;padding:18px 16px;min-height:132px;color:#2b1a3f;background:radial-gradient(70px 22px at 72% 22%,#fffa,#fff0),radial-gradient(50px 18px at 92% 40%,#fff9,#fff0),linear-gradient(#f4cdc0,#e9bfd0 45%,#8b6bb4 85%,#6b4a9c)}
+.av{position:relative;flex:none;width:66px;height:66px;border-radius:50%;border:3px solid var(--p);background:#fff;display:grid;place-items:center;font-size:32px;box-shadow:0 0 0 3px #fff}
+.av i{position:absolute;right:-6px;bottom:-4px;width:22px;height:22px;border-radius:50%;background:var(--p);color:var(--g);font-size:12px;font-style:normal;display:grid;place-items:center;border:2px solid #fff}
+.qb{display:flex;background:#5c5663}.qb button{flex:1;color:#fff;padding:14px;font-size:14px}.qb button+button{border-left:1px solid #ffffff40}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--bd)}
+.tl{position:relative;aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:8px;font-size:12px;text-align:center;line-height:1.3;color:var(--tx);background:var(--sf) repeating-linear-gradient(45deg,#0000 0 3px,#00000008 3px 4px)}
+.tl .ti{font-size:34px;height:44px;display:grid;place-items:center}.tl.pu{background:#4E2A84;color:#fff}.tl.nt{background:#fff1b8;box-shadow:inset 0 0 0 2px var(--g);color:#2b1a00}
+.tl .nw{top:8px;right:8px}.pl{width:44px;height:44px;border:2px solid #9a96a6;border-radius:50%;display:grid;place-items:center;font-size:28px;color:#9a96a6}
+.es{background:#74408f;color:#fff;padding:12px 14px 0;margin-top:8px}.es span{font-size:13px}
+.sr{display:flex;margin:12px -14px 0;height:84px}.sr div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;padding-bottom:8px;font-size:12px;font-weight:700;text-align:center;line-height:1.3}.sr div::first-line{font-size:22px}
+.ap{position:relative;margin-top:8px;min-height:120px;padding:14px;color:#fff;background:linear-gradient(120deg,#2f2542,#6a5a7c)}.ap small{display:block;margin-top:2px}.ap .ar{position:absolute;right:14px;bottom:8px;font-size:48px}
+.ac{margin-top:8px;padding:18px 14px;font-weight:700;color:#fff;background:linear-gradient(90deg,#4E2A84,#7a47b8)}
+.nv{display:flex;background:var(--sf);border-top:1px solid var(--bd);padding:4px 0}.nv button{flex:1;display:grid;place-items:center;padding:8px;color:#8a8696}.nv .on{color:var(--p)}
+.nv svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+</style></head><body><div class="app">
+
+<section id="home" class="scr on">
+ <div class="hs">
+  <div class="hh"><div class="av">👤<i>★</i></div><div><b style="font-size:17px">สวัสดี</b><div style="font-size:20px;font-weight:700">รัชนีพร</div><small>📍 กรุงเทพมหานคร</small></div></div>
+  <div class="qb"><button>⛶ สแกนจ่าย</button><button>▦ QR ของฉัน</button></div>
+  <div class="tg" id="gd"></div>
+  <div class="es"><b>EASY Store</b><br><span>ศูนย์รวมบริการทางการเงิน</span><div class="sr"><div style="background:#e0577e">📈<br>ลงทุน</div><div style="background:#4fb3a6">☂️<br>ประกัน</div><div style="background:#6a3aa0">🙂<br>สินเชื่อ</div><div style="background:#4a8bd4">💳<br>บัตร</div><div style="background:#f2b84b;color:#3a2800">👛<br>บัญชี</div></div></div>
+  <div class="ap"><b>Apply Loan &amp; Credit Card</b><small>สมัครสินเชื่อ และบัตรเครดิต</small><span class="ar">🚗🪙</span></div>
+  <div class="ac">Activate Credit Card &amp; Speedy Cash</div>
+ </div>
+ <div class="nv" id="n1"></div>
+</section>
+
+<section id="fd" class="scr">
+ <div class="top"><button class="ib" id="bk" aria-label="กลับ">‹</button>
+  <div class="sb">🔍<input id="q" placeholder="ค้นหาชื่อสถานที่ เขต หรือจังหวัด"><button id="qc" style="display:none">✕</button></div>
+  <button class="ib" id="fb" aria-label="ตัวกรอง">⚙️<i id="fbi" style="display:none"></i></button></div>
+ <div class="demo">ข้อมูลตัวอย่าง (Demo) · แผนที่จำลอง ตำแหน่งและสถานะตู้ไม่ใช่ข้อมูลจริง</div>
+ <div class="stp" id="stp"></div>
+ <div class="map" id="mp"><svg id="sv"></svg>
+  <div class="ui chips" id="chips"></div>
+  <div class="ui rt"><button class="fab" id="zi">＋</button><button class="fab" id="zo">－</button><button class="fab" id="lc" aria-label="ตำแหน่งปัจจุบัน">📍</button></div>
+  <div class="ui emp" id="emp"><div style="font-size:30px">🏧</div><b>ไม่พบตู้ ATM ในพื้นที่ที่ค้นหา</b><p class="mu">ลองเปลี่ยนคำค้นหา ตัวกรอง หรือเลือกพื้นที่อื่น</p><button class="btn p" id="clr">ล้างการค้นหาและตัวกรอง</button></div>
+  <div class="ui bt" id="bt"><button class="pill" id="nr">📍 ค้นหาตู้ ATM ใกล้ฉัน</button><div class="cr" id="cr"></div></div>
+ </div>
+ <div class="nv" id="n2"></div>
+ <div class="md on" id="ld" style="background:var(--bg)"><div style="background:none"><div class="sp"></div>กำลังโหลดแผนที่…</div></div>
+</section>
+
+<div id="ov"></div>
+<div class="sh" id="fs"></div><div class="sh" id="ds"></div>
+<div class="md" id="pm"><div><div style="font-size:34px">📍</div><h3>อนุญาตให้ใช้ตำแหน่งของคุณ</h3><p class="mu">SCB EASY ใช้ตำแหน่งเพื่อแสดงตู้ ATM ใกล้คุณและคำนวณระยะทาง</p><div class="bb" style="margin-top:12px"><button class="btn o" id="pn">ไม่ใช่ตอนนี้</button><button class="btn p" id="pa">อนุญาต</button></div></div></div>
+<div id="ts"></div>
+</div>
+<script>
+const $=s=>document.querySelector(s),mp=$('#mp');
+const BK={scb:{n:'SCB',c:'#4E2A84'},a:{n:'ธนาคารตัวอย่าง ก',c:'#0E9F6E'},b:{n:'ธนาคารตัวอย่าง ข',c:'#E4572E'}};
+const L0=[13.7466,100.5347],mm=(la,ln)=>[(ln-L0[1])*108100,(L0[0]-la)*110574];
+const raw=[[1,'scb','สยามสแควร์','ปทุมวัน','ถนนพระรามที่ 1',13.7455,100.5330],[2,'scb','จุฬาฯ ซอย 1','ปทุมวัน','ถนนพญาไท',13.7380,100.5320],[3,'scb','สีลม','บางรัก','ถนนสีลม',13.7285,100.5340],[4,'scb','อโศก','วัฒนา','ถนนสุขุมวิท',13.7370,100.5600],[5,'scb','จตุจักร','จตุจักร','ถนนพหลโยธิน',13.8000,100.5530],[6,'a','เพลินจิต','ปทุมวัน','ถนนเพลินจิต',13.7430,100.5490],[7,'a','ทองหล่อ','วัฒนา','ซอยสุขุมวิท 55',13.7300,100.5780],[8,'b','สาทร','สาทร','ถนนสาทรเหนือ',13.7200,100.5290],[9,'b','ราชเทวี','ราชเทวี','ถนนเพชรบุรี',13.7570,100.5340],[10,'a','พญาไท','ราชเทวี','ถนนพญาไท',13.7650,100.5340]];
+const A=raw.map(r=>{const[x,y]=mm(r[5],r[6]);return{id:r[0],b:r[1],p:'ตู้ตัวอย่าง · '+r[2],d:r[3],ad:r[4]+' เขต'+r[3]+' กรุงเทพมหานคร (ที่อยู่ตัวอย่าง)',x,y,la:r[5],ln:r[6],v:false}});
+const AREAS=[...new Set(A.map(a=>a.d))];
+const st={bank:'all',near:true,area:'all',q:'',sel:null,mode:'driving',perm:'ask'};
+let U={...(([x,y])=>({x,y}))(mm(13.7445,100.5325)),real:false},V={x:U.x,y:U.y,k:.12};
+const dist=a=>Math.hypot(a.x-U.x,a.y-U.y),fmt=d=>d<1000?Math.round(d/10)*10+' ม.':(d/1000).toFixed(1)+' กม.';
+const clampK=k=>Math.min(.6,Math.max(.03,k));
+function toast(t){const e=$('#ts');e.textContent=t;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2600)}
+const go=id=>document.querySelectorAll('.scr').forEach(s=>s.classList.toggle('on',s.id==id));
+function vis(){const q=st.q.trim().toLowerCase();const l=A.filter(a=>(st.bank=='all'||(st.bank=='scb')==(a.b=='scb'))&&(st.area=='all'||a.d==st.area)&&(!q||[a.p,a.d,a.ad,BK[a.b].n,'กรุงเทพมหานคร'].join(' ').toLowerCase().includes(q)));return st.near?l.sort((a,b)=>dist(a)-dist(b)):l}
+function fit(l){if(!l.length)return;const xs=l.map(a=>a.x),ys=l.map(a=>a.y),Mx=Math.max(...xs),mx=Math.min(...xs),My=Math.max(...ys),my=Math.min(...ys);V.x=(Mx+mx)/2;V.y=(My+my)/2;V.k=clampK(Math.min(mp.clientWidth/(Mx-mx+600),mp.clientHeight*.55/(My-my+600)))}
+function draw(){const W=mp.clientWidth,H=mp.clientHeight;if(!W)return;const k=V.k;let rd='',mn='';for(let i=-45;i<=45;i++){const m=i*300,s=`M${m} -14000V14000M-14000 ${m}H14000`;i%3?mn+=s:rd+=s}
+ let s=`<g transform="translate(${W/2-V.x*k} ${H/2-V.y*k}) scale(${k})"><path class="w" d="M-3200 -14000C-2600 -2000 -3800 1500 -2800 14000"/><rect x="1300" y="-2700" width="900" height="700" fill="var(--mp)"/><g transform="rotate(18)">${k>.09?`<path class="r2" d="${mn}"/>`:''}<path class="r1" d="${rd}"/></g></g>`;
+ const P=m=>[(m.x-V.x)*k+W/2,(m.y-V.y)*k+H/2];
+ [...vis()].sort((a,b)=>(a.id==st.sel)-(b.id==st.sel)).forEach(a=>{const[x,y]=P(a);if(x<-30||y<-40||x>W+30||y>H+30)return;const on=a.id==st.sel;
+  s+=`<g data-id="${a.id}" style="cursor:pointer" transform="translate(${x} ${y}) scale(${on?1.35:1})"><path d="M0 0C-10 -12 -14 -18 -14 -24a14 14 0 1 1 28 0c0 6-4 12-14 24z" fill="${BK[a.b].c}" stroke="${on?'#F5B700':'#fff'}" stroke-width="2.5"/><circle cy="-24" r="5.5" fill="#fff"/></g>`});
+ const[ux,uy]=P(U);s+=`<circle cx="${ux}" cy="${uy}" r="20" fill="#1a73e8" opacity=".18"/><circle cx="${ux}" cy="${uy}" r="8" fill="#1a73e8" stroke="#fff" stroke-width="3"/>`;
+ $('#sv').innerHTML=s}
+function render(){const l=vis();draw();
+ $('#chips').innerHTML=`<span class="ch">พบ ${l.length} ตู้</span>`+(st.bank!='all'?`<span class="ch">${st.bank=='scb'?'SCB ATM':'ธนาคารอื่น'}</span>`:'')+(st.area!='all'?`<span class="ch">เขต${st.area}</span>`:'');
+ $('#fbi').style.display=(st.bank!='all'||st.area!='all')?'block':'none';$('#qc').style.display=st.q?'block':'none';
+ const p=st.perm,sp=$('#stp');sp.classList.toggle('on',p!='ask'&&(p!='ok'||!U.real));
+ sp.innerHTML=p=='loading'?'⏳ กำลังค้นหาตำแหน่งของคุณ…':p=='denied'?'<span>ไม่ได้รับอนุญาตให้ใช้ตำแหน่ง · ใช้ตำแหน่งตัวอย่างย่านสยามแทน</span><button id="rt">ลองอีกครั้ง</button>':'ใช้ตำแหน่งตัวอย่างย่านสยาม (Demo)';
+ const idle=!st.sel;$('#emp').classList.toggle('on',!l.length);$('#bt').style.display=idle?'flex':'none';
+ $('#nr').style.display=l.length?'block':'none';
+ $('#cr').innerHTML=l.map(a=>`<button class="cc" data-id="${a.id}"><span class="dot" style="background:${BK[a.b].c}"></span><b>${BK[a.b].n}</b> <em class="bd">DEMO</em><br>${a.p}<br><small>${fmt(dist(a))} · ${a.d}</small></button>`).join('');
+ det()}
+function det(){const a=A.find(z=>z.id==st.sel),s=$('#ds');if(!a){s.classList.remove('on');return}
+ const d=dist(a),b=BK[a.b],u=`https://www.google.com/maps/dir/?api=1${U.real?`&origin=${U.la},${U.ln}`:''}&destination=${a.la},${a.ln}&travelmode=${st.mode}`;
+ s.innerHTML=`<div class="gr"></div><div class="row"><span class="dot" style="background:${b.c}"></span><b>${b.n}</b><em class="bd ${a.v?'ok':''}">${a.v?'✓ ยืนยันแล้ว':'DEMO'}</em><button id="x" aria-label="ปิด">✕</button></div>
+ <h3>${a.p}</h3><p class="mu">${a.ad}</p><div class="im">ไม่มีรูปภาพสถานที่ในข้อมูลนี้</div>
+ <div class="kv"><span>ระยะทางจากคุณ</span><b>${fmt(d)}</b></div>
+ <div class="kv"><span>ถอนไม่ใช้บัตรผ่าน SCB EASY</span><b>${a.v?'รองรับ (ยืนยันแล้ว)':'ข้อมูลตัวอย่าง · ยังไม่ยืนยัน'}</b></div>
+ <div class="seg"><button data-m="driving" class="${st.mode=='driving'?'on':''}">🚗 รถยนต์ ~${Math.max(1,Math.round(d*1.4/330))} นาที</button><button data-m="walking" class="${st.mode=='walking'?'on':''}">🚶 เดินเท้า ~${Math.max(1,Math.round(d*1.3/75))} นาที</button></div>
+ <div class="bb"><a class="btn p" target="_blank" rel="noopener" href="${u}&dir_action=navigate">นำทางไปยังตู้ ATM</a><a class="btn o" target="_blank" rel="noopener" href="${u}">ดูเส้นทาง</a></div>
+ <p class="mu" style="font-size:11px;text-align:center;margin-top:8px">จะเปิด Google Maps พร้อมพิกัดปลายทางของตู้ที่เลือก</p>`;s.classList.add('on')}
+function fs(){const op=(v,t,sub)=>`<label class="op ${st.bank==v?'on':''}"><input type="radio" name="bk" value="${v}" ${st.bank==v?'checked':''}><div><b>${t}</b><small>${sub}</small></div></label>`;
+ $('#fs').innerHTML=`<div class="gr"></div><h3>ตัวกรอง</h3>`+op('all','ตู้ ATM ทั้งหมดที่รองรับถอนเงินไม่ใช้บัตร','SCB และธนาคารอื่นที่รองรับผ่าน SCB EASY')+op('scb','SCB ATM','ตู้ของธนาคารไทยพาณิชย์')+op('other','Other Bank ATM','เฉพาะธนาคารและตู้ที่ยืนยันว่ารองรับ SCB EASY Cardless')
+ +`<label class="op"><input type="checkbox" id="nrs" ${st.near?'checked':''}><b>เรียงตามระยะทางใกล้ที่สุด</b></label><div class="mu" style="margin-top:8px">พื้นที่ / เขต</div><select id="ar">${['all',...AREAS].map(v=>`<option value="${v}" ${st.area==v?'selected':''}>${v=='all'?'ทุกพื้นที่':'เขต'+v}</option>`).join('')}</select>
+ <p class="mu" style="font-size:11px">Prototype นี้ยังไม่มีตู้ที่ยืนยันแล้ว (Verified 0 ตู้) ทุกตู้เป็นข้อมูล Demo</p><div class="bb" style="margin-top:8px"><button class="btn o" id="rs">ล้างตัวกรอง</button><button class="btn p" id="ok">ดูผลลัพธ์ ${vis().length} ตู้</button></div>`}
+function select(id){const a=A.find(z=>z.id==id);st.sel=id;V.k=Math.max(V.k,.15);V.x=a.x;V.y=a.y+mp.clientHeight*.2/V.k;render()}
+function closeF(){$('#fs').classList.remove('on');$('#ov').classList.remove('on')}
+function reset(){Object.assign(st,{bank:'all',area:'all',near:true,q:'',sel:null});$('#q').value='';fit(vis());render()}
+const deny=()=>{st.perm='denied';render()};
+function reqLoc(){$('#pm').classList.remove('on');st.perm='loading';render();if(!navigator.geolocation)return deny();
+ navigator.geolocation.getCurrentPosition(p=>{const[x,y]=mm(p.coords.latitude,p.coords.longitude);st.perm='ok';
+  if(Math.hypot(x,y)>40000)toast('ตำแหน่งของคุณอยู่นอกพื้นที่ข้อมูลตัวอย่าง จึงใช้ตำแหน่งตัวอย่างย่านสยามแทน');else U={x,y,real:true,la:p.coords.latitude,ln:p.coords.longitude};
+  V.x=U.x;V.y=U.y;V.k=.15;render()},deny,{timeout:8000})}
+function openFinder(){go('fd');$('#ld').classList.add('on');setTimeout(()=>{$('#ld').classList.remove('on');V.x=U.x;V.y=U.y;V.k=.12;render();if(st.perm=='ask')$('#pm').classList.add('on')},800)}
+// Home
+const T=[['👨‍👩‍👧‍👦','บัญชีครอบครัว<br>และเพื่อน'],['📱','มือถือ และเน็ต'],['<span style="color:#F5B700;font-size:42px">❖</span>','ธุรกรรมของฉัน','pu'],['📍','ค้นหาตู้ ATM','nt'],['💧⚡','ค่าน้ำ ค่าไฟ'],['<span class="pl">+</span>','เพิ่มรายการโปรด']];
+$('#gd').innerHTML=T.map((t,i)=>`<button class="tl ${t[2]||''}" data-i="${i}">${t[2]=='nt'?'<span class="nw">ใหม่</span>':''}<span class="ti">${t[0]}</span>${t[1]}</button>`).join('');
+$('#gd').onclick=e=>{const b=e.target.closest('.tl');if(b)b.dataset.i==3?openFinder():toast('ฟีเจอร์นี้อยู่นอกขอบเขตของ Prototype')};
+document.querySelectorAll('.es,.ap,.ac,.qb button').forEach(b=>b.onclick=()=>toast('ฟีเจอร์นี้อยู่นอกขอบเขตของ Prototype'));
+const IC=['<path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/>','<rect x="2" y="6" width="20" height="13" rx="2"/><path d="M2 11h20"/>','<path d="M7 4v14M4 15l3 3 3-3M17 20V6M14 9l3-3 3 3"/>','<path d="M6 17v-6a6 6 0 0112 0v6l2 2H4zM10 21h4"/>','<path d="M4 7h16M4 12h16M4 17h16"/>'];
+const nav=a=>IC.map((p,i)=>`<button data-n="${i}" class="${i==a?'on':''}" aria-label="เมนู ${i+1}"><svg viewBox="0 0 24 24">${p}</svg></button>`).join('');
+$('#n1').innerHTML=nav(0);$('#n2').innerHTML=nav(-1);
+document.querySelectorAll('.nv').forEach(n=>n.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.n=='0'){st.sel=null;go('home')}else toast('เมนูนี้อยู่นอกขอบเขตของ Prototype')});
+$('#bk').onclick=()=>{st.sel=null;go('home')};
+// Map interaction
+let d=null;
+mp.addEventListener('pointerdown',e=>{if(e.target.closest('.ui'))return;d={x:e.clientX,y:e.clientY,vx:V.x,vy:V.y,m:0}});
+addEventListener('pointermove',e=>{if(!d)return;const dx=e.clientX-d.x,dy=e.clientY-d.y;d.m=Math.max(d.m,Math.hypot(dx,dy));if(d.m>5){V.x=d.vx-dx/V.k;V.y=d.vy-dy/V.k;draw()}});
+addEventListener('pointerup',()=>setTimeout(()=>d=null));
+mp.addEventListener('click',e=>{if(d&&d.m>5)return;const g=e.target.closest('#sv [data-id]');if(g)select(+g.dataset.id)});
+mp.addEventListener('wheel',e=>{e.preventDefault();V.k=clampK(V.k*(e.deltaY<0?1.2:1/1.2));draw()},{passive:false});
+$('#zi').onclick=()=>{V.k=clampK(V.k*1.5);draw()};$('#zo').onclick=()=>{V.k=clampK(V.k/1.5);draw()};
+$('#lc').onclick=()=>{if(st.perm!='ok')$('#pm').classList.add('on');else{V.x=U.x;V.y=U.y;V.k=.18;render()}};
+$('#nr').onclick=()=>{const l=[...vis()].sort((a,b)=>dist(a)-dist(b));l.length?select(l[0].id):toast('ไม่พบตู้ ATM ในพื้นที่ที่ค้นหา')};
+$('#cr').onclick=e=>{const c=e.target.closest('.cc');if(c)select(+c.dataset.id)};
+$('#stp').onclick=e=>{if(e.target.id=='rt')$('#pm').classList.add('on')};
+$('#pa').onclick=reqLoc;$('#pn').onclick=()=>{$('#pm').classList.remove('on');deny()};
+new ResizeObserver(draw).observe(mp);
+// Search & filter
+$('#q').oninput=e=>{st.q=e.target.value;st.sel=null;fit(vis());render()};
+$('#qc').onclick=()=>{$('#q').value='';st.q='';fit(vis());render()};$('#clr').onclick=reset;
+$('#fb').onclick=()=>{fs();$('#fs').classList.add('on');$('#ov').classList.add('on')};$('#ov').onclick=closeF;
+$('#fs').onchange=e=>{const t=e.target;if(t.name=='bk')st.bank=t.value;else if(t.id=='nrs')st.near=t.checked;else if(t.id=='ar')st.area=t.value;st.sel=null;fit(vis());render();fs()};
+$('#fs').onclick=e=>{if(e.target.id=='ok')closeF();if(e.target.id=='rs'){reset();fs()}};
+$('#ds').onclick=e=>{const m=e.target.closest('[data-m]');if(m){st.mode=m.dataset.m;det()}if(e.target.closest('#x')){st.sel=null;render()}};
+</script></body></html>
