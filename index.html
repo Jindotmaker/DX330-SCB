@@ -126,6 +126,16 @@ select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);bac
 .tlw{position:relative;background:var(--sf)}.tlw::before{content:"";position:absolute;left:22px;top:0;bottom:0;width:1px;background:var(--bd)}
 .tli{position:relative;display:flex;align-items:flex-start;gap:8px;width:100%;padding:16px 14px 16px 42px}.tli[data-id]{cursor:pointer}.tli::before{content:"";position:absolute;left:18px;top:21px;width:9px;height:9px;border-radius:50%;background:var(--sf);border:1.5px solid #b8b4c4}
 .tl1{flex:1;display:flex;flex-direction:column;gap:6px}.tl1 small{color:var(--mu)}.tl2{text-align:right;font-weight:700}.tl2 b{color:var(--mu);font-size:12px}.tl2 b.ps{color:#2d9d3a;font-size:inherit}.tl2 b.ng{color:#d32f2f;font-size:inherit}.cv{color:var(--mu)}
+.cfm.bgp{background:var(--bg)}.amc{background:var(--sf);padding:16px 18px;border-radius:0 0 18px 18px}.amr{display:flex;align-items:center;gap:16px}.amt2{font-size:32px;font-weight:700;color:var(--p);line-height:1.2}
+.shd{margin:14px;padding:14px;border-radius:14px;background:#4E2A8414;display:flex;gap:14px;align-items:center}
+.opt{display:flex;align-items:center;gap:14px;width:calc(100% - 28px);margin:0 14px 10px;padding:14px;border-radius:14px;background:var(--sf);border:2px solid transparent;text-align:left}.opt.on{border-color:var(--p)}.opt small{display:block;color:var(--mu);margin-top:2px}
+.rd{margin-left:auto;flex:none;width:24px;height:24px;border-radius:50%;border:2px solid var(--bd);display:grid;place-items:center;color:#fff;font-size:14px}.opt.on .rd{background:var(--p);border-color:var(--p)}
+.inf2{margin:14px;padding:12px 14px;border-radius:12px;background:#4E2A8412;color:var(--mu);font-size:13px;display:flex;gap:10px;align-items:center}
+.qpn{margin:14px;padding:16px;border-radius:16px;background:var(--sf);text-align:center}
+.qfr{position:relative;width:204px;height:204px;margin:14px auto;padding:24px;border-radius:6px;background:linear-gradient(var(--p),var(--p)) 0 0/30px 4px,linear-gradient(var(--p),var(--p)) 0 0/4px 30px,linear-gradient(var(--p),var(--p)) 100% 0/30px 4px,linear-gradient(var(--p),var(--p)) 100% 0/4px 30px,linear-gradient(var(--p),var(--p)) 0 100%/30px 4px,linear-gradient(var(--p),var(--p)) 0 100%/4px 30px,linear-gradient(var(--p),var(--p)) 100% 100%/30px 4px,linear-gradient(var(--p),var(--p)) 100% 100%/4px 30px,#fff;background-repeat:no-repeat}
+.qfr i{position:absolute;left:24px;right:24px;top:24px;height:2px;background:var(--p);box-shadow:0 0 8px var(--p);animation:sc 2s ease-in-out infinite alternate}@keyframes sc{to{top:176px}}
+.stp3{display:flex;gap:14px;align-items:center;background:#4E2A8412;border-radius:12px;padding:10px 14px;text-align:left;font-size:13px;line-height:1.8}
+.or{display:flex;align-items:center;gap:10px;color:var(--p);margin:12px 0}.or::before,.or::after{content:"";flex:1;height:1px;background:var(--bd)}
 </style></head><body><div class="app">
 
 <section id="home" class="scr on">
@@ -166,6 +176,31 @@ select{width:100%;padding:10px;border-radius:10px;border:1px solid var(--bd);bac
   <div class="ht">เบอร์มือถือนี้ใช้ยืนยันตัวตนเมื่อนำรหัสกดเงินไปใช้ที่ตู้ ATM</div>
  </div>
  <div class="cf"><button class="btn p" id="go" style="width:100%">ยืนยัน</button></div>
+</section>
+
+<section id="vm" class="scr">
+ <div class="ct"><button id="vmb" aria-label="กลับ">←</button><b>ยืนยันการถอนเงิน</b><span style="width:34px"></span></div>
+ <div class="cfm bgp">
+  <div class="amc" data-amc></div>
+  <div class="shd"><svg viewBox="0 0 40 44" width="40"><path d="M20 2l16 6v13c0 11-7 18-16 21C11 39 4 32 4 21V8z" fill="#7a47c2"/><path d="M12 22l6 6 11-12" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><span>กรุณาเลือกวิธีการยืนยันตัวตน<br>เพื่อยืนยันการถอนเงิน</span></div>
+  <button class="opt on" data-m="code"><svg viewBox="0 0 40 40" width="44" fill="#8e6bd0"><circle cx="10" cy="10" r="3.500"/><circle cx="20" cy="10" r="3.500"/><circle cx="30" cy="10" r="3.500"/><circle cx="10" cy="20" r="3.500"/><circle cx="20" cy="20" r="3.500"/><circle cx="30" cy="20" r="3.500"/><circle cx="10" cy="30" r="3.500"/><circle cx="20" cy="30" r="3.500"/><circle cx="30" cy="30" r="3.500"/></svg><span><b>กรอกรหัส 6 หลัก</b><small>ใส่รหัสผ่าน 6 หลักที่ตู้ ATM</small></span><span class="rd">✓</span></button>
+  <button class="opt" data-m="qr"><svg viewBox="0 0 48 48" width="44" fill="none" stroke="#6d3fb0" stroke-width="3" stroke-linecap="round"><path d="M6 16V8a2 2 0 012-2h8M32 6h8a2 2 0 012 2v8M42 32v8a2 2 0 01-2 2h-8M16 42H8a2 2 0 01-2-2v-8"/><rect x="15" y="15" width="7" height="7"/><rect x="26" y="15" width="7" height="7"/><rect x="15" y="26" width="7" height="7"/><rect x="26" y="26" width="7" height="7"/></svg><span><b>สแกนคิวอาร์โค้ด</b><small>สแกน QR บนหน้าตู้ ATM เพื่อยืนยันการถอนเงิน</small></span><span class="rd">✓</span></button>
+  <div class="inf2"><span style="font-size:20px">ⓘ</span><span>หากต้องการความปลอดภัยสูงสุด สามารถเลือกสแกนคิวอาร์โค้ดได้</span></div>
+ </div>
+ <div class="cf"><button class="btn p" id="vms" style="width:100%">เริ่มยืนยัน</button></div>
+</section>
+
+<section id="qs" class="scr">
+ <div class="ct"><button id="qsb" aria-label="กลับ">←</button><b>ยืนยันการถอนเงิน</b><span style="width:34px"></span></div>
+ <div class="cfm bgp">
+  <div class="amc" data-amc></div>
+  <div class="qpn"><b style="font-size:17px">สแกนคิวอาร์โค้ดที่หน้าตู้</b><div class="mu">เพื่อยืนยันการถอนเงิน</div>
+   <div class="qfr" id="qfr"></div><small class="mu">QR ตัวอย่าง (Demo) ไม่สามารถสแกนจริงได้</small>
+   <div class="stp3" style="margin-top:14px"><svg viewBox="0 0 48 48" width="56"><rect x="10" y="4" width="28" height="40" rx="5" fill="#9b7bd6"/><rect x="14" y="9" width="20" height="14" rx="2" fill="#fff"/><rect x="18" y="12" width="12" height="8" fill="#4E2A84"/><rect x="16" y="29" width="16" height="3" rx="1.5" fill="#6d3fb0"/></svg><span>1. สแกน QR บนหน้าตู้ ATM<br>2. ตรวจสอบข้อมูลและยืนยัน</span></div>
+   <div class="or">หรือ</div><button class="btn o" id="qco" style="width:100%">กรอกรหัส 6 หลักแทน</button></div>
+  <div class="ht" style="padding-top:0">🔒 การสแกน QR ช่วยป้องกันการกดผิด</div>
+ </div>
+ <div class="cf"><button class="btn p" id="qsim" style="width:100%">จำลองการสแกน QR ที่ตู้ ATM (Demo)</button></div>
 </section>
 
 <section id="rc" class="scr">
@@ -287,16 +322,27 @@ $('#cb').onclick=()=>go('home');$('#fa').onclick=openFinder;$('#ck').onclick=rev
 const fmtT=d=>d.getDate()+' '+['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'][d.getMonth()]+' '+(d.getFullYear()+543)+' - '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0');
 function review(){const c=tab=='c';$('#fm').innerHTML=c?'<span class="mc"></span>LALISA SAMPLE':'<b>ลลิษา ตัวอย่าง</b>';$('#fn').innerHTML=c?'7777 77xx xxxx 7777<br>บัตรเครดิต':'xxx-xxx503-2<br>บัญชีออมทรัพย์';$('#fam').textContent=f(amt);$('#wn').style.display=c?'block':'none';$('#go').disabled=false;$('#go').textContent='ยืนยัน';go('vf')}
 $('#vfb').onclick=()=>go('cw');
-$('#go').onclick=e=>{const b=e.currentTarget;b.disabled=true;b.textContent='กำลังดำเนินการ…';setTimeout(mk,900)};
+let mth='code';
+const ATMI='<svg viewBox="0 0 48 48" width="64"><rect x="2" y="2" width="44" height="44" rx="9" fill="#e6dcf7"/><rect x="10" y="8" width="28" height="24" rx="3" fill="#6d3fb0"/><rect x="14" y="12" width="20" height="9" rx="1.5" fill="#fff"/><rect x="17" y="28" width="14" height="14" rx="2" fill="#c9a8f5"/></svg>';
+function qr(){let s='';for(let i=0;i<21;i++)for(let j=0;j<21;j++){const F=(a,b)=>{const x=i-a,y=j-b;return x<0||x>6||y<0||y>6?null:x%6==0||y%6==0||(x>1&&x<5&&y>1&&y<5)},v=F(0,0)??F(0,14)??F(14,0)??((i*31+j*17+i*j*7+(i^j))%7<3);if(v)s+=`<rect x="${j}" y="${i}" width="1" height="1"/>`}return`<svg viewBox="-1 -1 23 23" width="100%" height="100%" fill="#111" shape-rendering="crispEdges">${s}</svg>`}
+function amc(){document.querySelectorAll('[data-amc]').forEach(e=>{const c=tab=='c';e.innerHTML=`<div class="amr">${ATMI}<div><div>ถอนเงิน</div><div class="amt2">${f(amt)} <small style="font-size:16px">บาท</small></div></div></div><div class="hr" style="margin:14px 0"></div><div class="fr" style="padding:0"><b>จาก</b><div style="text-align:right;flex:1"><div>${c?'<span class="mc"></span>LALISA SAMPLE':'<b>ลลิษา ตัวอย่าง</b>'}</div><small class="mu">${c?'7777 77xx xxxx 7777 · บัตรเครดิต':'xxx-xxx503-2 · บัญชีเงินฝาก'}</small></div></div>`})}
+const opts=()=>document.querySelectorAll('.opt').forEach(b=>b.classList.toggle('on',b.dataset.m==mth));
+$('#go').onclick=()=>{mth='code';opts();amc();go('vm')};
+$('#vmb').onclick=()=>go('vf');$('#qsb').onclick=()=>go('vm');
+document.querySelector('#vm .cfm').onclick=e=>{const b=e.target.closest('.opt');if(b){mth=b.dataset.m;opts()}};
+$('#vms').onclick=e=>{if(mth=='qr'){amc();go('qs');return}const b=e.currentTarget;b.disabled=true;b.textContent='กำลังดำเนินการ…';setTimeout(()=>{b.disabled=false;b.textContent='เริ่มยืนยัน';mk()},900)};
+$('#qfr').innerHTML=qr()+'<i></i>';
+$('#qco').onclick=()=>{mth='code';opts();mk()};
+$('#qsim').onclick=e=>{const b=e.currentTarget;b.disabled=true;b.textContent='สแกนสำเร็จ · กำลังยืนยัน…';setTimeout(()=>{b.disabled=false;b.textContent='จำลองการสแกน QR ที่ตู้ ATM (Demo)';mk(1)},1000)};
 const KEY='scbeasy.receipts',RC=(()=>{try{return JSON.parse(localStorage.getItem(KEY))||[]}catch(e){return[]}})(),save=()=>{try{localStorage.setItem(KEY,JSON.stringify(RC))}catch(e){}};
 let tm,cur,rcBack='home',hb='cw';
 const rnd=(a,b)=>String(Math.floor(Math.random()*a)+b),exp=r=>{if(r.k=='code'&&r.st=='pending'&&Date.now()>r.x){r.st='exp';save()}};
-function mk(){const n=Date.now(),c=tab=='c',r={id:n,k:'code',t:n,x:n+9e5,code:rnd(9e5,1e5),ph:$('#idv').value,nm:c?'บัตรเครดิต Platinum (ตัวอย่าง)':'ลลิษา ตัวอย่าง',ac:c?'7777 77xx xxxx 7777|บัตรเครดิต':'xxx-xxx503-2|บัญชีเงินฝาก',am:amt,st:'pending'};RC.push(r);save();showRc(r)}
+function mk(q){const n=Date.now(),c=tab=='c',r={id:n,k:q?'paid':'code',m:q?'qr':'code',t:n,x:n+9e5,code:q?'':rnd(9e5,1e5),ref:q?rnd(9e11,1e11):'',ph:$('#idv').value,nm:c?'บัตรเครดิต Platinum (ตัวอย่าง)':'ลลิษา ตัวอย่าง',ac:c?'7777 77xx xxxx 7777|บัตรเครดิต':'xxx-xxx503-2|บัญชีเงินฝาก',am:amt,st:q?'paid':'pending'};RC.push(r);save();showRc(r)}
 function pay(){const n=Date.now();cur.st='paid';const r={...cur,id:n,k:'paid',t:n,ref:rnd(9e11,1e11),cid:cur.id};RC.push(r);save();showRc(r)}
 function showRc(r,back){exp(r);cur=r;rcBack=back||'home';const p=r.k=='paid',on=!p&&r.st=='pending';
  $('#rtt').textContent=p?'ถอนเงินสำเร็จ':'ทำรายการสำเร็จ';$('#rtx').textContent=p?'คุณรับเงินสดจากตู้ ATM เรียบร้อยแล้ว':'ใช้รหัสกดเงินและเบอร์มือถือ กดเงินที่ตู้ ATM ที่รองรับภายใน 15 นาที';
  $('#rdm').textContent=p?'ใบเสร็จตัวอย่าง (Demo) · จำลองการรับเงินสด':'รหัสตัวอย่าง (Demo) · ไม่สามารถใช้กดเงินจากตู้ ATM จริงได้';
- $('#rt').textContent=fmtT(new Date(r.t));$('#rl').textContent=p?'รหัสกดเงินที่ใช้':'รหัสกดเงิน';$('#rcd').textContent=r.code;$('#rrf').style.display=p?'flex':'none';$('#rrv').textContent=r.ref||'';
+ $('#rt').textContent=fmtT(new Date(r.t));$('#rl').textContent=p?(r.m=='qr'?'วิธียืนยัน':'รหัสกดเงินที่ใช้'):'รหัสกดเงิน';$('#rcd').textContent=r.m=='qr'?'สแกน QR ที่ตู้':r.code;$('#rcd').style.fontSize=r.m=='qr'?'18px':'';$('#rrf').style.display=p?'flex':'none';$('#rrv').textContent=r.ref||'';
  $('#rex').textContent=p?'':'กดเงินภายในวันที่ '+fmtT(new Date(r.x));$('#rph').textContent=r.ph;$('#rnm').textContent=r.nm;$('#rac').innerHTML=r.ac.replace('|','<br>');$('#ram').textContent=f(r.am);
  clearInterval(tm);const tick=()=>{const s=Math.max(0,Math.round((r.x-Date.now())/1e3));$('#rcn').textContent=p?'':r.st=='paid'?'ใช้งานแล้ว':r.st=='exp'||!s?'รหัสหมดอายุแล้ว':'รหัสหมดอายุใน '+Math.floor(s/60)+':'+String(s%60).padStart(2,'0')};tick();if(on)tm=setInterval(tick,1e3);
  $('#rf').textContent=on?'จำลองรับเงินที่ตู้ ATM':'ดูประวัติ';$('#rd').textContent=back?'ปิด':'เสร็จสิ้น';go('rc')}
